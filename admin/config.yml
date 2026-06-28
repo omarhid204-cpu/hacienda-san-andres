@@ -1,0 +1,196 @@
+backend:
+  name: git-gateway
+  branch: main
+
+locale: es
+
+media_folder: "images"
+public_folder: "/images"
+
+collections:
+  - name: "contenido"
+    label: "Contenido del sitio"
+    files:
+      - name: "principal"
+        label: "Todo el contenido"
+        file: "content.json"
+        format: json
+        fields:
+
+          # ─────────────────────────────────────────
+          # SEO
+          # ─────────────────────────────────────────
+          - label: "SEO"
+            name: "seo"
+            widget: "object"
+            fields:
+              - { label: "Título de la página", name: "title", widget: "string" }
+              - { label: "Meta descripción", name: "meta_description", widget: "text" }
+              - { label: "Favicon", name: "favicon", widget: "image", required: false }
+
+          # ─────────────────────────────────────────
+          # NEGOCIO
+          # ─────────────────────────────────────────
+          - label: "Datos del Negocio"
+            name: "negocio"
+            widget: "object"
+            fields:
+              - { label: "Nombre", name: "nombre", widget: "string" }
+              - { label: "Logo", name: "logo", widget: "image", required: false, hint: "Imagen del logotipo (PNG recomendado con fondo transparente)" }
+              - { label: "Dirección", name: "direccion", widget: "string" }
+              - { label: "Teléfono", name: "telefono", widget: "string" }
+              - { label: "Email", name: "email", widget: "string" }
+              - { label: "WhatsApp (con código de país, sin +)", name: "whatsapp", widget: "string", hint: "Ejemplo: 525553572833" }
+
+          # ─────────────────────────────────────────
+          # HEADER
+          # ─────────────────────────────────────────
+          - label: "Header / Encabezado"
+            name: "header"
+            widget: "object"
+            fields:
+              - { label: "Mostrar botón de promoción", name: "promo_activo", widget: "boolean", default: true }
+              - { label: "Texto del botón de promoción", name: "promo_texto", widget: "string", hint: "Texto que aparece en el botón superior izquierdo" }
+              - label: "Página a la que lleva el botón"
+                name: "promo_enlace"
+                widget: "select"
+                options:
+                  - { label: "Inicio", value: "home" }
+                  - { label: "Nuestra Historia", value: "historia" }
+                  - { label: "Espacios", value: "espacios" }
+                  - { label: "Galería", value: "galeria" }
+                  - { label: "Visita Virtual", value: "visita-virtual" }
+                  - { label: "Contacto", value: "contacto" }
+
+          # ─────────────────────────────────────────
+          # HOME
+          # ─────────────────────────────────────────
+          - label: "Página de Inicio (Home)"
+            name: "home"
+            widget: "object"
+            fields:
+              - { label: "Título principal", name: "titulo", widget: "string" }
+              - { label: "Subtítulo", name: "subtitulo", widget: "string", required: false }
+              - label: "Imágenes del carrusel"
+                name: "slides"
+                widget: "list"
+                min: 1
+                fields:
+                  - { label: "Imagen", name: "url", widget: "image" }
+                  - { label: "Texto alternativo (accesibilidad)", name: "alt", widget: "string", required: false }
+
+          # ─────────────────────────────────────────
+          # HISTORIA
+          # ─────────────────────────────────────────
+          - label: "Nuestra Historia"
+            name: "historia"
+            widget: "object"
+            fields:
+              - { label: "Título", name: "titulo", widget: "string" }
+              - { label: "Texto (puedes usar saltos de línea)", name: "texto", widget: "text" }
+              - { label: "Imagen principal", name: "imagen", widget: "image", required: false }
+
+          # ─────────────────────────────────────────
+          # ESPACIOS
+          # ─────────────────────────────────────────
+          - label: "Espacios"
+            name: "espacios"
+            widget: "object"
+            fields:
+              - { label: "Título de la sección", name: "titulo", widget: "string" }
+              - { label: "Texto introductorio", name: "texto_intro", widget: "text" }
+              - label: "Espacios / Salones"
+                name: "items"
+                widget: "list"
+                fields:
+                  - { label: "Nombre del espacio", name: "nombre", widget: "string" }
+                  - { label: "Imagen", name: "imagen", widget: "image", required: false }
+
+          # ─────────────────────────────────────────
+          # GALERÍA
+          # ─────────────────────────────────────────
+          - label: "Galería"
+            name: "galeria"
+            widget: "object"
+            fields:
+              - { label: "Título de la sección", name: "titulo", widget: "string" }
+              - label: "Imágenes"
+                name: "items"
+                widget: "list"
+                fields:
+                  - { label: "Activa", name: "activo", widget: "boolean", default: true }
+                  - { label: "Imagen", name: "imagen", widget: "image", required: false }
+                  - { label: "Título de la imagen", name: "titulo", widget: "string", required: false }
+                  - label: "Categoría"
+                    name: "categoria"
+                    widget: "select"
+                    options:
+                      - "Bodas"
+                      - "XV Años"
+                      - "Graduaciones"
+                      - "Corporativos"
+                      - "Ceremonias"
+                      - "Salones"
+                      - "Jardines"
+                      - "Decoración"
+                      - "General"
+
+          # ─────────────────────────────────────────
+          # VISITA VIRTUAL
+          # ─────────────────────────────────────────
+          - label: "Visita Virtual"
+            name: "visita_virtual"
+            widget: "object"
+            fields:
+              - { label: "Título", name: "titulo", widget: "string" }
+              - { label: "Texto descriptivo", name: "texto", widget: "text" }
+              - { label: "URL del video de YouTube", name: "video_url", widget: "string", required: false, hint: "Pega la URL completa de YouTube. Ejemplo: https://www.youtube.com/watch?v=XXXXXXX" }
+
+          # ─────────────────────────────────────────
+          # CONTACTO
+          # ─────────────────────────────────────────
+          - label: "Contacto"
+            name: "contacto"
+            widget: "object"
+            fields:
+              - { label: "Título de la sección", name: "titulo", widget: "string" }
+              - { label: "URL del mapa embebido (Google Maps)", name: "mapa_embed_url", widget: "string", hint: "Ve a Google Maps → Compartir → Insertar mapa → Copia la URL del src del iframe" }
+              - { label: "Dirección (para mostrar en la página)", name: "direccion", widget: "string" }
+              - { label: "Teléfono", name: "telefono", widget: "string" }
+              - { label: "Email", name: "email", widget: "string" }
+              - label: "Horarios"
+                name: "horarios"
+                widget: "list"
+                fields:
+                  - { label: "Días", name: "dias", widget: "string", hint: "Ejemplo: Lunes a Viernes" }
+                  - { label: "Horario", name: "horas", widget: "string", hint: "Ejemplo: 9:00 a 15:00" }
+              - label: "Tipos de evento (para el formulario)"
+                name: "tipos_evento"
+                widget: "list"
+                field: { label: "Tipo de evento", name: "tipo", widget: "string" }
+              - { label: "Título del formulario", name: "formulario_titulo", widget: "string" }
+
+          # ─────────────────────────────────────────
+          # WHATSAPP
+          # ─────────────────────────────────────────
+          - label: "Botón de WhatsApp"
+            name: "whatsapp"
+            widget: "object"
+            fields:
+              - { label: "Mostrar botón de WhatsApp", name: "activo", widget: "boolean", default: true }
+              - { label: "Número de WhatsApp (con código de país, sin +)", name: "telefono", widget: "string", hint: "Ejemplo: 525553572833" }
+              - { label: "Mensaje predeterminado", name: "mensaje", widget: "string" }
+
+          # ─────────────────────────────────────────
+          # FOOTER
+          # ─────────────────────────────────────────
+          - label: "Footer / Pie de página"
+            name: "footer"
+            widget: "object"
+            fields:
+              - { label: "Texto del aviso de privacidad", name: "aviso_privacidad_texto", widget: "string" }
+              - { label: "URL del aviso de privacidad", name: "aviso_privacidad_url", widget: "string" }
+              - { label: "Dirección", name: "direccion", widget: "string" }
+              - { label: "Teléfono", name: "telefono", widget: "string" }
+              - { label: "Email", name: "email", widget: "string" }
+              - { label: "Texto de copyright", name: "copyright", widget: "string" }

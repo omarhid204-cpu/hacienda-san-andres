@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="meta-title">Hacienda San Andrés – Salón de Eventos</title>
+  <meta name="description" id="meta-desc" content="Salón de eventos en Naucalpan">
+  <link rel="icon" id="favicon" href="/images/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --navy:   #1e2d4a;
+      --navy2:  #162238;
+      --blue:   #4a6fa5;
+      --blue2:  #3a5a8a;
+      --white:  #ffffff;
+      --cream:  #f7f5f0;
+      --gold:   #b8983a;
+      --text:   #2c2c2c;
+      --header: 70px;
+      --ease:   cubic-bezier(.4,0,.2,1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: auto; }
+    body { font-family: 'Lato', sans-serif; color: var(--text); background: var(--white); overflow-x: hidden; }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+
+    /* ── LOADING ── */
+    #loading {
+      position: fixed; inset: 0; background: var(--navy);
+      display: flex; align-items: center; justify-content: center; z-index: 9999;
+      transition: opacity .5s, visibility .5s;
+    }
+    #loading.hidden { opacity: 0; visibility: hidden; }
+    .spin {
+      width: 44px; height: 44px;
+      border: 3px solid rgba(255,255,255,.2);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── HEADER ── */
+    #header {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--header);
+      background: var(--navy);
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 0 16px;
+      z-index: 900;
+      box-shadow: 0 2px 16px rgba(0,0,0,.35);
+    }
+    #promo-btn {
+      justify-self: start;
+      display: inline-flex; align-items: center;
+      background: transparent;
+      border: 1.5px solid rgba(255,255,255,.55);
+      color: #fff;
+      font-family: 'Lato', sans-serif;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all .25s;
+      white-space: nowrap;
+    }
+    #promo-btn:hover { background: rgba(255,255,255,.15); border-color: #fff; }
+    #header-logo {
+      justify-self: center;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #header-logo img { height: 48px; width: auto; object-fit: contain; cursor: pointer; }
+    #hamburger-btn {
+      justify-self: end;
+      background: none; border: none;
+      color: #fff; font-size: 1.7rem;
+      cursor: pointer; padding: 6px;
+      line-height: 1; display: flex; align-items: center;
+    }
+
+    /* ── MOBILE MENU (fullscreen overlay) ── */
+    #mobile-menu {
+      position: fixed; inset: 0;
+      background: var(--navy2);
+      z-index: 1000;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      opacity: 0; visibility: hidden;
+      transition: opacity .35s var(--ease), visibility .35s;
+    }
+    #mobile-menu.open { opacity: 1; visibility: visible; }
+    #menu-close {
+      position: absolute; top: 18px; right: 20px;
+      background: none; border: none;
+      color: rgba(255,255,255,.7); font-size: 2rem;
+      cursor: pointer; line-height: 1;
+      transition: color .2s;
+    }
+    #menu-close:hover { color: #fff; }
+    .menu-links { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .menu-links a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.6rem, 5vw, 2.4rem);
+      font-weight: 500;
+      color: rgba(255,255,255,.85);
+      letter-spacing: .08em;
+      padding: 10px 30px;
+      text-transform: uppercase;
+      transition: color .2s;
+      cursor: pointer;
+    }
+    .menu-links a:hover, .menu-links a.active { color: #fff; }
+    .menu-links a.active { border-bottom: 2px solid var(--gold); }
+    .menu-divider { width: 40px; height: 1px; background: rgba(255,255,255,.15); margin: 8px auto; }
+
+    /* ── PAGES ── */
+    .page { display: none; min-height: calc(100vh - var(--header)); padding-top: var(--header); }
+    .page.active { display: block; }
+
+    /* ═══════════════════════════════ HOME */
+    #page-home { padding-top: 0; }
+    .carousel-wrap {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+      background: var(--navy);
+    }
+    .c-slide {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+      opacity: 0; transition: opacity 1s ease;
+    }
+    .c-slide.active { opacity: 1; }
+    .c-placeholder {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, var(--navy2) 0%, #2a3f66 100%);
+    }
+    .c-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(30,45,74,.3) 0%, rgba(30,45,74,.65) 100%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 20px;
+    }
+    .c-overlay h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 5vw, 3.8rem);
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.25;
+      max-width: 700px;
+      text-shadow: 0 2px 12px rgba(0,0,0,.5);
+    }
+    .c-overlay p {
+      font-size: clamp(.95rem, 2vw, 1.15rem);
+      color: rgba(255,255,255,.85);
+      margin-top: 16px;
+      max-width: 520px;
+      font-weight: 300;
+      text-shadow: 0 1px 8px rgba(0,0,0,.4);
+    }
+    .c-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,.18);
+      border: 1.5px solid rgba(255,255,255,.4);
+      color: #fff; font-size: 1.4rem;
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background .25s;
+      z-index: 5;
+    }
+    .c-arrow:hover { background: rgba(255,255,255,.35); }
+    #c-prev { left: 16px; }
+    #c-next { right: 16px; }
+    .c-dots {
+      position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 8px; z-index: 5;
+    }
+    .c-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,.4); cursor: pointer; transition: all .3s;
+    }
+    .c-dot.active { background: #fff; width: 24px; border-radius: 4px; }
+
+    /* ═══════════════════════════════ HISTORIA */
+    #page-historia { background: var(--white); }
+    .historia-inner {
+      max-width: 900px; margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
+    .page-titulo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 600;
+      color: var(--navy);
+      text-align: center;
+      margin-bottom: 14px;
+    }
+    .titulo-deco {
+      width: 56px; height: 2px;
+      background: var(--gold);
+      margin: 0 auto 40px;
+    }
+    .historia-texto {
+      font-size: 1.05rem; line-height: 1.85;
+      color: #444; margin-bottom: 44px;
+      white-space: pre-line;
+    }
+    .historia-img {
+      width: 100%; border-radius: 6px;
+      overflow: hidden; box-shadow: 0 8px 32px rgba(30,45,74,.18);
+    }
+    .historia-img img { width: 100%; height: auto; object-fit: cover; display: block; }
+    .img-ph {
+      width: 100%; height: 380px;
+      background: linear-gradient(135deg, var(--navy2), #2a3f66);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,.35); font-size: .85rem;
+      letter-spacing: .1em; text-transform: uppercase;
+    }
+
+    /* ═══════════════════════════════ ESPACIOS */
+    #page-espacios { background: var(--cream); }
+    .espacios-inner { max-width: 1200px; margin: 0 auto; padding: 60px 24px 80px; }
+    .intro-text {
+      font-size: 1.05rem; color: #555; line-height: 1.75;
+      max-width: 660px; margin: 0 auto 50px; text-align: center;
+    }
+    .espacios-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .espacio-card {
+      position: relative; border-radius: 6px;
+      overflow: hidden; box-shadow: 0 4px 20px rgba(30,45,74,.15);
+      cursor: pointer; transition: transform .3s var(--ease);
+      aspect-ratio: 4/3;
+    }
+    .espacio-card:hover { transform: translateY(-4px); }
+    .espacio-card img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .5s ease;
+    }
+    .espacio-card:hover img { transform: scale(1.05); }
+    .espacio-ph {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, var(--navy2), #334d7a);
+    }
+    .espacio-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: rgba(30,45,74,.78);
+      color: #fff;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem; font-weight: 600;
+      text-align: center;
+      padding: 14px 12px;
+      letter-spacing: .04em;
+    }
+
+    /* ═══════════════════════════════ GALERÍA */
+    #page-galeria { background: var(--white); }
+    .galeria-inner { max-width: 1200px; margin: 0 auto; padding: 60px 24px 80px; }
+    .gal-filtros { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 36px; }
+    .gal-filtro {
+      padding: 7px 20px; border-radius: 30px;
+      border: 1.5px solid var(--navy); background: transparent;
+      color: var(--navy); font-family: 'Lato', sans-serif;
+      font-size: .85rem; font-weight: 700; cursor: pointer;
+      letter-spacing: .06em; text-transform: uppercase;
+      transition: all .25s;
+    }
+    .gal-filtro.active, .gal-filtro:hover { background: var(--navy); color: #fff; }
+    .gal-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px;
+    }
+    .gal-item {
+      aspect-ratio: 4/3; border-radius: 5px;
+      overflow: hidden; cursor: pointer;
+      position: relative;
+      transition: transform .3s var(--ease);
+    }
+    .gal-item:hover { transform: scale(1.02); }
+    .gal-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
+    .gal-item:hover img { transform: scale(1.06); }
+    .gal-item-ph { width: 100%; height: 100%; background: linear-gradient(135deg, var(--navy2), #2a4a7f); }
+    .gal-hover-overlay {
+      position: absolute; inset: 0;
+      background: rgba(30,45,74,0);
+      transition: background .3s;
+      display: flex; align-items: flex-end; padding: 14px;
+    }
+    .gal-item:hover .gal-hover-overlay { background: rgba(30,45,74,.55); }
+    .gal-hover-text { color: #fff; font-size: .9rem; font-weight: 600; opacity: 0; transform: translateY(8px); transition: all .3s; }
+    .gal-item:hover .gal-hover-text { opacity: 1; transform: none; }
+
+    /* LIGHTBOX */
+    #lightbox {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.92); z-index: 2000;
+      align-items: center; justify-content: center;
+    }
+    #lightbox.open { display: flex; }
+    #lb-img { max-width: 90vw; max-height: 88vh; border-radius: 4px; object-fit: contain; }
+    #lb-close {
+      position: absolute; top: 18px; right: 22px;
+      color: rgba(255,255,255,.8); font-size: 2.2rem;
+      cursor: pointer; line-height: 1;
+      transition: color .2s;
+    }
+    #lb-close:hover { color: #fff; }
+    #lb-prev, #lb-next {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,.15); border: none;
+      color: #fff; font-size: 1.8rem;
+      width: 48px; height: 48px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background .25s;
+    }
+    #lb-prev { left: 16px; }
+    #lb-next { right: 16px; }
+    #lb-prev:hover, #lb-next:hover { background: rgba(255,255,255,.3); }
+
+    /* ═══════════════════════════════ VISITA VIRTUAL */
+    #page-visita-virtual { background: var(--cream); }
+    .virtual-inner { max-width: 900px; margin: 0 auto; padding: 60px 24px 80px; text-align: center; }
+    .virtual-texto {
+      font-size: 1.05rem; color: #555; line-height: 1.75;
+      max-width: 600px; margin: 0 auto 40px;
+    }
+    .video-resp {
+      position: relative; width: 100%;
+      padding-bottom: 56.25%;
+      border-radius: 8px; overflow: hidden;
+      box-shadow: 0 12px 40px rgba(30,45,74,.22);
+    }
+    .video-resp iframe {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; border: none;
+    }
+    .video-ph {
+      position: absolute; inset: 0;
+      background: var(--navy2);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,.4); font-size: .9rem; letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    /* ═══════════════════════════════ CONTACTO */
+    #page-contacto { background: var(--white); }
+    .contacto-inner { max-width: 1100px; margin: 0 auto; padding: 60px 24px 80px; }
+    .contacto-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      margin-top: 44px;
+    }
+    @media(max-width:768px) { .contacto-grid { grid-template-columns: 1fr; } }
+    .mapa-wrap { border-radius: 8px; overflow: hidden; height: 320px; box-shadow: 0 4px 24px rgba(30,45,74,.12); }
+    .mapa-wrap iframe { width: 100%; height: 100%; border: none; }
+    .mapa-ph { width: 100%; height: 100%; background: var(--navy2); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.4); font-size: .85rem; }
+    .contacto-data { display: flex; flex-direction: column; gap: 18px; }
+    .dato-item { display: flex; gap: 14px; align-items: flex-start; }
+    .dato-icon { width: 40px; height: 40px; border-radius: 50%; background: var(--navy); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+    .dato-body strong { display: block; color: var(--navy); font-size: .85rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px; }
+    .dato-body span, .dato-body a { color: #555; font-size: .95rem; line-height: 1.6; }
+    .horario-list { display: flex; flex-direction: column; gap: 5px; }
+    .horario-row { display: flex; gap: 10px; font-size: .9rem; color: #555; }
+    .horario-dia { color: var(--navy); font-weight: 700; min-width: 140px; }
+    .form-section { margin-top: 56px; }
+    .form-titulo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem; color: var(--navy);
+      margin-bottom: 28px; font-weight: 600;
+    }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media(max-width:600px) { .form-grid { grid-template-columns: 1fr; } }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label { font-size: .82rem; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: .08em; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 11px 14px;
+      border: 1.5px solid #d8d8d8; border-radius: 5px;
+      font-family: 'Lato', sans-serif; font-size: .95rem;
+      color: var(--text); background: #fff;
+      transition: border-color .25s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none; border-color: var(--blue);
+    }
+    .form-group textarea { min-height: 120px; resize: vertical; }
+    .btn-enviar {
+      margin-top: 20px; padding: 14px 40px;
+      background: var(--navy); color: #fff;
+      border: none; border-radius: 4px;
+      font-family: 'Lato', sans-serif; font-size: .95rem;
+      font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; cursor: pointer;
+      transition: background .25s;
+    }
+    .btn-enviar:hover { background: var(--blue2); }
+
+    /* ── WHATSAPP ── */
+    #wa-btn {
+      position: fixed; bottom: 24px; right: 22px; z-index: 800;
+      width: 58px; height: 58px; border-radius: 50%;
+      background: #25D366;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 18px rgba(37,211,102,.45);
+      cursor: pointer; transition: transform .25s, box-shadow .25s;
+    }
+    #wa-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,.6); }
+    #wa-btn svg { width: 30px; height: 30px; fill: #fff; }
+    .wa-pulse {
+      position: absolute; inset: -5px; border-radius: 50%;
+      background: rgba(37,211,102,.25);
+      animation: wap 2.5s infinite;
+    }
+    @keyframes wap { 0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.5);opacity:0} }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy2);
+      color: rgba(255,255,255,.65);
+      padding: 36px 24px;
+      text-align: center;
+      font-size: .88rem;
+      line-height: 1.8;
+    }
+    footer a { color: rgba(255,255,255,.65); text-decoration: underline; transition: color .2s; }
+    footer a:hover { color: #fff; }
+    .footer-inner { max-width: 700px; margin: 0 auto; }
+    .footer-divider { width: 40px; height: 1px; background: rgba(255,255,255,.2); margin: 14px auto; }
+
+    /* ── UTILITY ── */
+    .text-center { text-align: center; }
+    .page-wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    @media(max-width:480px) {
+      #promo-btn { font-size: .62rem; padding: 5px 8px; }
+      #header-logo img { height: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Netlify Identity redirects -->
+<script>
+  if (window.location.hash.includes('invite_token') ||
+      window.location.hash.includes('recovery_token') ||
+      window.location.hash.includes('confirmation_token')) {
+    window.location.href = '/admin/' + window.location.hash;
+  }
+  if (window.netlifyIdentity) {
+    window.netlifyIdentity.on('init', u => {
+      if (!u) window.netlifyIdentity.on('login', () => { document.location.href = '/admin/'; });
+    });
+  }
+</script>
+
+<!-- Loading -->
+<div id="loading"><div class="spin"></div></div>
+
+<!-- ══════════════════════════════════════ HEADER -->
+<header id="header">
+  <button id="promo-btn" onclick="navigate('contacto')">PROMOCIÓN DEL MES</button>
+
+  <div id="header-logo">
+    <img src="/images/logo.png" alt="Hacienda San Andrés" id="logo-img"
+         onclick="navigate('home')"
+         onerror="this.style.display='none';document.getElementById('logo-fallback').style.display='block'">
+    <span id="logo-fallback" style="display:none;font-family:'Cormorant Garamond',serif;color:#fff;font-size:1.2rem;font-weight:600;cursor:pointer" onclick="navigate('home')">Hacienda San Andrés</span>
+  </div>
+
+  <button id="hamburger-btn" onclick="openMenu()" aria-label="Abrir menú">☰</button>
+</header>
+
+<!-- ══════════════════════════════════════ MOBILE MENU -->
+<div id="mobile-menu">
+  <button id="menu-close" onclick="closeMenu()" aria-label="Cerrar menú">✕</button>
+  <nav class="menu-links">
+    <a onclick="navigate('home')">Home</a>
+    <div class="menu-divider"></div>
+    <a onclick="navigate('historia')">Nuestra Historia</a>
+    <div class="menu-divider"></div>
+    <a onclick="navigate('espacios')">Espacios</a>
+    <div class="menu-divider"></div>
+    <a onclick="navigate('galeria')">Galería</a>
+    <div class="menu-divider"></div>
+    <a onclick="navigate('visita-virtual')">Visita Virtual</a>
+    <div class="menu-divider"></div>
+    <a onclick="navigate('contacto')">Contacto</a>
+  </nav>
+</div>
+
+<!-- ══════════════════════════════════════ PÁGINAS -->
+
+<!-- PAGE: HOME -->
+<div id="page-home" class="page active">
+  <div class="carousel-wrap">
+    <div id="carousel-slides"></div>
+    <div class="c-overlay">
+      <h1 id="home-titulo">El día más importante de tu vida, en un sólo lugar</h1>
+      <p id="home-subtitulo"></p>
+    </div>
+    <button class="c-arrow" id="c-prev" onclick="carouselPrev()">&#8592;</button>
+    <button class="c-arrow" id="c-next" onclick="carouselNext()">&#8594;</button>
+    <div class="c-dots" id="c-dots"></div>
+  </div>
+</div>
+
+<!-- PAGE: HISTORIA -->
+<div id="page-historia" class="page">
+  <div class="historia-inner">
+    <h2 class="page-titulo" id="hist-titulo">Nuestra Historia</h2>
+    <div class="titulo-deco"></div>
+    <p class="historia-texto" id="hist-texto"></p>
+    <div class="historia-img" id="hist-img-wrap"></div>
+  </div>
+</div>
+
+<!-- PAGE: ESPACIOS -->
+<div id="page-espacios" class="page">
+  <div class="espacios-inner">
+    <h2 class="page-titulo" id="esp-titulo">Un espacio para cada evento</h2>
+    <div class="titulo-deco"></div>
+    <p class="intro-text" id="esp-intro"></p>
+    <div class="espacios-grid" id="espacios-grid"></div>
+  </div>
+</div>
+
+<!-- PAGE: GALERÍA -->
+<div id="page-galeria" class="page">
+  <div class="galeria-inner">
+    <h2 class="page-titulo" id="gal-titulo">Galería</h2>
+    <div class="titulo-deco"></div>
+    <div class="gal-filtros" id="gal-filtros"></div>
+    <div class="gal-grid" id="gal-grid"></div>
+  </div>
+</div>
+
+<!-- PAGE: VISITA VIRTUAL -->
+<div id="page-visita-virtual" class="page">
+  <div class="virtual-inner">
+    <h2 class="page-titulo" id="vv-titulo">Visita Virtual</h2>
+    <div class="titulo-deco"></div>
+    <p class="virtual-texto" id="vv-texto"></p>
+    <div class="video-resp" id="vv-video"></div>
+  </div>
+</div>
+
+<!-- PAGE: CONTACTO -->
+<div id="page-contacto" class="page">
+  <div class="contacto-inner">
+    <h2 class="page-titulo" id="cont-titulo">Contáctanos</h2>
+    <div class="titulo-deco"></div>
+    <div class="contacto-grid">
+      <div>
+        <div class="mapa-wrap" id="mapa-wrap"></div>
+      </div>
+      <div class="contacto-data" id="contacto-data"></div>
+    </div>
+    <div class="form-section">
+      <h3 class="form-titulo" id="form-titulo">Envíanos un mensaje</h3>
+      <form name="contacto" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="form-contacto">
+        <input type="hidden" name="form-name" value="contacto">
+        <p style="display:none"><label>No rellenar: <input name="bot-field"></label></p>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Nombre *</label>
+            <input type="text" name="nombre" required placeholder="Tu nombre completo">
+          </div>
+          <div class="form-group">
+            <label>Email *</label>
+            <input type="email" name="email" required placeholder="tu@email.com">
+          </div>
+          <div class="form-group">
+            <label>Teléfono</label>
+            <input type="tel" name="telefono" placeholder="55 0000 0000">
+          </div>
+          <div class="form-group">
+            <label>Fecha del evento</label>
+            <input type="date" name="fecha_evento">
+          </div>
+          <div class="form-group">
+            <label>Tipo de evento</label>
+            <select name="tipo_evento" id="tipo-evento-sel">
+              <option value="">Selecciona…</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>No. de invitados</label>
+            <input type="number" name="num_invitados" placeholder="Ej. 200" min="1">
+          </div>
+          <div class="form-group full">
+            <label>Comentarios</label>
+            <textarea name="comentarios" placeholder="Cuéntanos sobre tu evento..."></textarea>
+          </div>
+        </div>
+        <button type="submit" class="btn-enviar">Enviar mensaje</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ LIGHTBOX -->
+<div id="lightbox" onclick="closeLightbox()">
+  <span id="lb-close" onclick="closeLightbox()">✕</span>
+  <button id="lb-prev" onclick="event.stopPropagation();lbPrev()">&#8592;</button>
+  <img id="lb-img" src="" alt="" onclick="event.stopPropagation()">
+  <button id="lb-next" onclick="event.stopPropagation();lbNext()">&#8594;</button>
+</div>
+
+<!-- ══════════════════════════════════════ WHATSAPP -->
+<a id="wa-btn" href="#" target="_blank" rel="noopener" title="WhatsApp">
+  <div class="wa-pulse"></div>
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.121.554 4.112 1.523 5.836L0 24l6.336-1.498A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.793 9.793 0 01-5.007-1.374l-.36-.213-3.727.881.943-3.619-.235-.374A9.76 9.76 0 012.182 12c0-5.413 4.405-9.818 9.818-9.818 5.413 0 9.818 4.405 9.818 9.818 0 5.413-4.405 9.818-9.818 9.818z"/></svg>
+</a>
+
+<!-- ══════════════════════════════════════ FOOTER -->
+<footer id="footer">
+  <div class="footer-inner">
+    <div id="footer-content"></div>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════ JSON-LD -->
+<script id="jsonld" type="application/ld+json"></script>
+
+<!-- ══════════════════════════════════════ SCRIPT -->
+<script>
+// ─── utilidades ───
+const $  = id => document.getElementById(id);
+const t  = (id, v) => { const e=$(id); if(e && v!==undefined) e.textContent = v; };
+const h  = (id, v) => { const e=$(id); if(e && v!==undefined) e.innerHTML = v; };
+
+function waLink(phone, msg) {
+  const n = (phone||'').replace(/\D/g,'');
+  return `https://wa.me/${n}?text=${encodeURIComponent(msg||'')}`;
+}
+function ytEmbed(url) {
+  if (!url) return '';
+  let id = '';
+  if (url.includes('youtu.be/')) id = url.split('youtu.be/')[1].split('?')[0];
+  else if (url.includes('v='))   id = url.split('v=')[1].split('&')[0];
+  else if (url.includes('/embed/')) return url;
+  return id ? `https://www.youtube.com/embed/${id}?rel=0` : '';
+}
+
+// ─── navegación ───
+let currentPage = 'home';
+function navigate(page) {
+  if (!$('page-'+page)) return;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  $('page-'+page).classList.add('active');
+  document.querySelectorAll('.menu-links a').forEach(a => a.classList.remove('active'));
+  document.querySelectorAll(`.menu-links a`).forEach(a => {
+    if (a.getAttribute('onclick') && a.getAttribute('onclick').includes(`'${page}'`)) a.classList.add('active');
+  });
+  currentPage = page;
+  window.scrollTo(0,0);
+  closeMenu();
+  window.history.pushState(null, '', '#' + page);
+  // re-init observer for new page
+  initObserver();
+}
+
+// ─── menú ───
+function openMenu()  { $('mobile-menu').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeMenu() { $('mobile-menu').classList.remove('open'); document.body.style.overflow=''; }
+
+// ─── hash routing ───
+function handleHash() {
+  const h = window.location.hash.slice(1);
+  const valid = ['home','historia','espacios','galeria','visita-virtual','contacto'];
+  if (valid.includes(h)) navigate(h);
+}
+window.addEventListener('popstate', handleHash);
+
+// ─── CAROUSEL ───
+let cIdx = 0, cSlides = [], cTimer;
+function buildCarousel(slides) {
+  cSlides = slides;
+  const wrap = $('carousel-slides'), dots = $('c-dots');
+  wrap.innerHTML = ''; dots.innerHTML = '';
+  slides.forEach((s, i) => {
+    const div = document.createElement('div');
+    div.className = 'c-slide' + (i===0?' active':'');
+    if (s.url) div.style.backgroundImage = `url('${s.url}')`;
+    else        div.innerHTML = '<div class="c-placeholder"></div>';
+    wrap.appendChild(div);
+    const dot = document.createElement('div');
+    dot.className = 'c-dot' + (i===0?' active':'');
+    dot.onclick = () => goSlide(i);
+    dots.appendChild(dot);
+  });
+  clearInterval(cTimer);
+  if (slides.length > 1) cTimer = setInterval(() => goSlide((cIdx+1) % slides.length), 5000);
+}
+function goSlide(n) {
+  const slides = document.querySelectorAll('.c-slide');
+  const dots   = document.querySelectorAll('.c-dot');
+  if (!slides.length) return;
+  slides[cIdx].classList.remove('active'); dots[cIdx].classList.remove('active');
+  cIdx = (n + slides.length) % slides.length;
+  slides[cIdx].classList.add('active'); dots[cIdx].classList.add('active');
+}
+function carouselPrev() { clearInterval(cTimer); goSlide(cIdx-1); }
+function carouselNext() { clearInterval(cTimer); goSlide(cIdx+1); }
+
+// ─── LIGHTBOX ───
+let lbItems = [], lbIdx = 0;
+function openLightbox(items, idx) {
+  lbItems = items; lbIdx = idx;
+  $('lb-img').src = items[idx];
+  $('lightbox').classList.add('open');
+}
+function closeLightbox() { $('lightbox').classList.remove('open'); $('lb-img').src=''; }
+function lbPrev() { lbIdx = (lbIdx - 1 + lbItems.length) % lbItems.length; $('lb-img').src = lbItems[lbIdx]; }
+function lbNext() { lbIdx = (lbIdx + 1) % lbItems.length; $('lb-img').src = lbItems[lbIdx]; }
+document.addEventListener('keydown', e => {
+  if (!$('lightbox').classList.contains('open')) return;
+  if (e.key === 'Escape')     closeLightbox();
+  if (e.key === 'ArrowLeft')  lbPrev();
+  if (e.key === 'ArrowRight') lbNext();
+});
+
+// ─── GALERÍA filtros ───
+let galAllItems = [], galFilter = 'Todos';
+function renderGalGrid() {
+  const filtered = galFilter === 'Todos' ? galAllItems : galAllItems.filter(i => i.categoria === galFilter);
+  const urls = filtered.map(i => i.imagen).filter(Boolean);
+  const grid = $('gal-grid'); grid.innerHTML = '';
+  filtered.forEach((item, idx) => {
+    const div = document.createElement('div');
+    div.className = 'gal-item';
+    div.onclick = () => { if(item.imagen) openLightbox(urls, urls.indexOf(item.imagen)); };
+    div.innerHTML = item.imagen
+      ? `<img src="${item.imagen}" alt="${item.titulo||''}" loading="lazy"><div class="gal-hover-overlay"><span class="gal-hover-text">${item.titulo||''}</span></div>`
+      : `<div class="gal-item-ph"></div>`;
+    grid.appendChild(div);
+  });
+}
+function filterGal(cat) {
+  galFilter = cat;
+  document.querySelectorAll('.gal-filtro').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
+  renderGalGrid();
+}
+
+// ─── INTERSECTION OBSERVER (fade-in) ───
+function initObserver() {
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='none'; } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.espacio-card, .gal-item').forEach(el => {
+    el.style.opacity = '0'; el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity .5s ease, transform .5s ease';
+    io.observe(el);
+  });
+}
+
+// ─── RENDER ───
+let C = {};
+function render(d) {
+  C = d;
+  renderMeta(d.seo||{});
+  renderHeader(d.header||{}, d.negocio||{});
+  renderHome(d.home||{});
+  renderHistoria(d.historia||{});
+  renderEspacios(d.espacios||{});
+  renderGaleria(d.galeria||{});
+  renderVirtualVisit(d.visita_virtual||{});
+  renderContacto(d.contacto||{}, d.negocio||{});
+  renderWA(d.whatsapp||{}, d.negocio||{});
+  renderFooter(d.footer||{}, d.negocio||{});
+  renderJsonLD(d.seo||{}, d.negocio||{});
+  handleHash();
+  initObserver();
+}
+
+function renderMeta(s) {
+  if (s.title) { document.title = s.title; t('meta-title', s.title); }
+  const desc = document.getElementById('meta-desc');
+  if (desc && s.meta_description) desc.content = s.meta_description;
+  if (s.favicon) $('favicon').href = s.favicon;
+}
+
+function renderHeader(hdr, neg) {
+  if (hdr.promo_activo === false) $('promo-btn').style.display = 'none';
+  else { t('promo-btn', hdr.promo_texto || 'PROMOCIÓN DEL MES'); }
+  const logoImg = $('logo-img');
+  if (neg.logo) logoImg.src = neg.logo;
+}
+
+function renderHome(home) {
+  t('home-titulo',   home.titulo   || 'El día más importante de tu vida, en un sólo lugar');
+  t('home-subtitulo', home.subtitulo || '');
+  buildCarousel(home.slides && home.slides.length ? home.slides : [{}]);
+}
+
+function renderHistoria(h) {
+  t('hist-titulo', h.titulo || 'Nuestra Historia');
+  t('hist-texto',  h.texto  || '');
+  const wrap = $('hist-img-wrap');
+  if (h.imagen) wrap.innerHTML = `<img src="${h.imagen}" alt="Historia Hacienda San Andrés">`;
+  else          wrap.innerHTML = `<div class="img-ph">Imagen próximamente</div>`;
+}
+
+function renderEspacios(esp) {
+  t('esp-titulo', esp.titulo       || 'Un espacio para cada evento');
+  t('esp-intro',  esp.texto_intro  || '');
+  const grid = $('espacios-grid'); grid.innerHTML = '';
+  (esp.items||[]).forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'espacio-card';
+    div.innerHTML = item.imagen
+      ? `<img src="${item.imagen}" alt="${item.nombre||''}" loading="lazy">`
+      : `<div class="espacio-ph"></div>`;
+    div.innerHTML += `<div class="espacio-label">${item.nombre||''}</div>`;
+    grid.appendChild(div);
+  });
+}
+
+function renderGaleria(gal) {
+  t('gal-titulo', gal.titulo || 'Galería');
+  galAllItems = (gal.items||[]).filter(i => i.activo !== false);
+  // build filter buttons
+  const cats = ['Todos', ...new Set(galAllItems.map(i => i.categoria).filter(Boolean))];
+  const filtros = $('gal-filtros'); filtros.innerHTML = '';
+  cats.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'gal-filtro' + (cat==='Todos'?' active':'');
+    btn.textContent = cat; btn.dataset.cat = cat;
+    btn.onclick = () => filterGal(cat);
+    filtros.appendChild(btn);
+  });
+  renderGalGrid();
+}
+
+function renderVirtualVisit(vv) {
+  t('vv-titulo', vv.titulo || 'Visita Virtual');
+  t('vv-texto',  vv.texto  || '');
+  const wrap = $('vv-video');
+  const embedUrl = ytEmbed(vv.video_url || '');
+  if (embedUrl) wrap.innerHTML = `<iframe src="${embedUrl}" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
+  else          wrap.innerHTML = `<div class="video-ph">Video próximamente</div>`;
+}
+
+function renderContacto(cont, neg) {
+  t('cont-titulo', cont.titulo || 'Contáctanos');
+  t('form-titulo', cont.formulario_titulo || 'Envíanos un mensaje');
+  // mapa
+  const mapa = $('mapa-wrap');
+  const src  = cont.mapa_embed_url || (neg.coordenadas ? `https://www.google.com/maps?q=${neg.coordenadas.lat},${neg.coordenadas.lng}&z=16&output=embed` : '');
+  if (src) mapa.innerHTML = `<iframe src="${src}" allowfullscreen loading="lazy" title="Mapa"></iframe>`;
+  else     mapa.innerHTML = `<div class="mapa-ph">Mapa próximamente</div>`;
+  // datos
+  const data = $('contacto-data'); data.innerHTML = '';
+  const dir  = cont.direccion || neg.direccion || '';
+  const tel  = cont.telefono  || neg.telefono  || '';
+  const email= cont.email     || neg.email     || '';
+  if (dir)   data.innerHTML += datoHTML('📍','Dirección', dir);
+  if (tel)   data.innerHTML += datoHTML('📞','Teléfono', `<a href="tel:${tel}">${tel}</a>`);
+  if (email) data.innerHTML += datoHTML('✉️','Email', `<a href="mailto:${email}">${email}</a>`);
+  // horarios
+  if ((cont.horarios||[]).length) {
+    const rows = cont.horarios.map(h => `<div class="horario-row"><span class="horario-dia">${h.dias}</span><span>${h.horas}</span></div>`).join('');
+    data.innerHTML += datoHTML('🕐','Horarios', `<div class="horario-list">${rows}</div>`);
+  }
+  // tipo evento select
+  const sel = $('tipo-evento-sel');
+  (cont.tipos_evento||[]).forEach(t => { sel.innerHTML += `<option value="${t}">${t}</option>`; });
+}
+function datoHTML(icon, label, body) {
+  return `<div class="dato-item"><div class="dato-icon">${icon}</div><div class="dato-body"><strong>${label}</strong><span>${body}</span></div></div>`;
+}
+
+function renderWA(wa, neg) {
+  if (wa.activo === false) { $('wa-btn').style.display='none'; return; }
+  const phone = wa.telefono || neg.whatsapp || '';
+  const msg   = wa.mensaje  || 'Hola, me gustaría obtener información sobre Hacienda San Andrés';
+  $('wa-btn').href = waLink(phone, msg);
+}
+
+function renderFooter(f, neg) {
+  const year  = new Date().getFullYear();
+  const dir   = f.direccion || neg.direccion || '';
+  const tel   = f.telefono  || neg.telefono  || '';
+  const email = f.email     || neg.email     || '';
+  const copy  = f.copyright || `© ${year} Hacienda San Andrés. Todos los derechos reservados.`;
+  const aviso = f.aviso_privacidad_texto || 'Aviso de privacidad';
+  const aUrl  = f.aviso_privacidad_url   || '#';
+  $('footer-content').innerHTML = `
+    ${dir   ? `<p>${dir}</p>` : ''}
+    ${tel   ? `<p>Tel: ${tel}</p>` : ''}
+    ${email ? `<p>${email}</p>` : ''}
+    <div class="footer-divider"></div>
+    <p><a href="${aUrl}">${aviso}</a></p>
+    <p style="margin-top:8px">${copy}</p>`;
+}
+
+function renderJsonLD(s, n) {
+  const ld = {
+    "@context":"https://schema.org",
+    "@type":["LocalBusiness","EventVenue"],
+    "name": n.nombre || "Hacienda San Andrés",
+    "description": s.meta_description || "",
+    "url": window.location.origin,
+    "telephone": n.telefono || "",
+    "email": n.email || "",
+    "address": {
+      "@type":"PostalAddress",
+      "streetAddress": n.direccion || "Atlacomulco No. 1, Col. San Esteban",
+      "addressLocality":"Naucalpan de Juárez",
+      "addressRegion":"Edo. de Méx.",
+      "addressCountry":"MX"
+    }
+  };
+  $('jsonld').textContent = JSON.stringify(ld);
+}
+
+// ─── INIT ───
+fetch('/content.json?v=' + Date.now())
+  .then(r => { if(!r.ok) throw new Error('content.json no encontrado'); return r.json(); })
+  .then(d => render(d))
+  .catch(err => { console.error(err); })
+  .finally(() => setTimeout(() => $('loading').classList.add('hidden'), 500));
+
+// form submit feedback
+document.addEventListener('DOMContentLoaded', () => {
+  const f = $('form-contacto');
+  if(f) f.addEventListener('submit', function() {
+    const btn = this.querySelector('.btn-enviar');
+    btn.textContent = 'Enviando…'; btn.disabled = true;
+  });
+});
+</script>
+
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+  if (window.location.hash.includes('invite_token') ||
+      window.location.hash.includes('recovery_token') ||
+      window.location.hash.includes('confirmation_token')) {
+    window.location.href = '/admin/' + window.location.hash;
+  }
+</script>
+</body>
+</html>
