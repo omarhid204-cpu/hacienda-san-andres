@@ -1,72 +1,52 @@
 {
-  "seo": {
-    "title": "Hacienda San Andrés – Salón de Eventos en Naucalpan",
-    "meta_description": "Hacienda San Andrés: salón de eventos, bodas, XV años y eventos corporativos en Naucalpan, Estado de México. Jardines, salones y capilla.",
-    "favicon": ""
-  },
-
-  "negocio": {
-    "nombre": "Hacienda San Andrés",
-    "logo": "/images/logo.png",
-    "direccion": "Atlacomulco No. 1, Col. San Esteban, Naucalpan Edo. de Méx.",
-    "telefono": "55 53 57 28 33",
-    "email": "eventos@haciendasanandres.com.mx",
-    "whatsapp": "525553572833"
-  },
-
-  "header": {
-    "promo_activo": true,
-    "promo_texto": "PROMOCIÓN DEL MES",
-    "promo_enlace": "contacto"
-  },
-
-  "home": {
-    "titulo": "El día más importante de tu vida, en un sólo lugar",
-    "subtitulo": "Hacienda San Andrés, el escenario perfecto para tu celebración",
-    "slides": [
-      { "url": "", "alt": "Jardín La Cúpula" },
-      { "url": "", "alt": "Salón Los Arcos" },
-      { "url": "", "alt": "Jardín Los Campos" }
-    ]
-  },
-
-  "historia": {
-    "titulo": "Nuestra historia",
-    "texto": "Hacienda San Andrés nació de la visión de crear un espacio donde cada celebración se convirtiera en un recuerdo imborrable. Desde nuestros inicios, nos hemos dedicado a ofrecer un servicio personalizado, atento y de la más alta calidad para que cada evento sea único e irrepetible.\n\nUbicados en el corazón de Naucalpan, nuestros jardines y salones han sido el escenario de miles de bodas, quinceañeras, graduaciones y eventos corporativos. Cada rincón de nuestra hacienda ha sido diseñado para transmitir elegancia, calidez y distinción.\n\nCon un equipo apasionado por los detalles y una infraestructura de primer nivel, Hacienda San Andrés es el lugar donde los sueños toman forma. Aquí, cada momento importa, cada detalle cuenta y cada celebración es tratada como si fuera la nuestra.",
-    "imagen": ""
-  },
-
-  "espacios": {
-    "titulo": "Un espacio para cada evento",
-    "texto_intro": "Contamos con una variedad de espacios únicos para que encuentres el escenario perfecto para tu celebración, desde íntimas reuniones hasta grandes festividades.",
-    "items": [
-      { "nombre": "Jardín La Cúpula",    "imagen": "" },
-      { "nombre": "Salón Los Arcos",     "imagen": "" },
-      { "nombre": "Jardín Los Campos",   "imagen": "" },
-      { "nombre": "Salón Los Pajaritos", "imagen": "" },
-      { "nombre": "Salón Los Balcones",  "imagen": "" },
-      { "nombre": "La Capilla",          "imagen": "" }
-    ]
-  },
-
-  "galeria": {
-    "titulo": "Galería",
-    "items": [
-      { "activo": true, "imagen": "", "titulo": "Boda en Jardín La Cúpula",    "categoria": "Bodas" },
-      { "activo": true, "imagen": "", "titulo": "Montaje Salón Los Arcos",     "categoria": "Salones" },
-      { "activo": true, "imagen": "", "titulo": "XV Años Jardín Los Campos",   "categoria": "XV Años" },
-      { "activo": true, "imagen": "", "titulo": "Decoración floral",           "categoria": "Decoración" },
-      { "activo": true, "imagen": "", "titulo": "Banquete corporativo",        "categoria": "Corporativos" },
-      { "activo": true, "imagen": "", "titulo": "La Capilla iluminada",        "categoria": "Ceremonias" }
-    ]
-  },
-
   "visita_virtual": {
     "titulo": "Visita Virtual",
     "texto": "Conoce nuestras instalaciones desde la comodidad de tu hogar. Recorre cada uno de nuestros espacios y descubre el lugar perfecto para tu evento.",
     "video_url": ""
   },
-
+  "espacios": {
+    "titulo": "Un espacio para cada evento",
+    "texto_intro": "Contamos con una variedad de espacios únicos para que encuentres el escenario perfecto para tu celebración, desde íntimas reuniones hasta grandes festividades.",
+    "items": [
+      {
+        "nombre": "Jardín La Cúpula",
+        "imagen": ""
+      },
+      {
+        "nombre": "Salón Los Arcos",
+        "imagen": ""
+      },
+      {
+        "nombre": "Jardín Los Campos",
+        "imagen": ""
+      },
+      {
+        "nombre": "Salón Los Pajaritos",
+        "imagen": ""
+      },
+      {
+        "nombre": "Salón Los Balcones",
+        "imagen": ""
+      },
+      {
+        "nombre": "La Capilla",
+        "imagen": ""
+      }
+    ]
+  },
+  "negocio": {
+    "nombre": "Hacienda San Andrés",
+    "logo": "/images/logo.jpg",
+    "direccion": "Atlacomulco No. 1, Col. San Esteban, Naucalpan Edo. de Méx.",
+    "telefono": "55 53 57 28 33",
+    "email": "eventos@haciendasanandres.com.mx",
+    "whatsapp": "525553572833"
+  },
+  "header": {
+    "promo_activo": true,
+    "promo_texto": "PROMOCIÓN DEL MES",
+    "promo_enlace": "contacto"
+  },
   "contacto": {
     "titulo": "Contáctanos",
     "mapa_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d942.75!2d-99.234!3d19.478!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d202b900000001%3A0x1!2sAtlacomulco+1%2C+San+Esteban%2C+Naucalpan!5e0!3m2!1ses!2smx!4v1700000000000",
@@ -74,9 +54,18 @@
     "telefono": "55 53 57 28 33",
     "email": "eventos@haciendasanandres.com.mx",
     "horarios": [
-      { "dias": "Lunes a Viernes", "horas": "9:00 a 15:00 y 16:00 a 18:00" },
-      { "dias": "Sábado",          "horas": "10:00 a 12:30" },
-      { "dias": "Domingo",         "horas": "Cerrado" }
+      {
+        "dias": "Lunes a Viernes",
+        "horas": "9:00 a 15:00 y 16:00 a 18:00"
+      },
+      {
+        "dias": "Sábado",
+        "horas": "10:00 a 12:30"
+      },
+      {
+        "dias": "Domingo",
+        "horas": "Cerrado"
+      }
     ],
     "tipos_evento": [
       "Boda",
@@ -91,13 +80,52 @@
     ],
     "formulario_titulo": "Envíanos un mensaje"
   },
-
   "whatsapp": {
     "activo": true,
     "telefono": "525553572833",
     "mensaje": "Hola, me gustaría obtener información sobre Hacienda San Andrés"
   },
-
+  "galeria": {
+    "titulo": "Galería",
+    "items": [
+      {
+        "activo": true,
+        "imagen": "",
+        "titulo": "Boda en Jardín La Cúpula",
+        "categoria": "Bodas"
+      },
+      {
+        "activo": true,
+        "imagen": "",
+        "titulo": "Montaje Salón Los Arcos",
+        "categoria": "Salones"
+      },
+      {
+        "activo": true,
+        "imagen": "",
+        "titulo": "XV Años Jardín Los Campos",
+        "categoria": "XV Años"
+      },
+      {
+        "activo": true,
+        "imagen": "",
+        "titulo": "Decoración floral",
+        "categoria": "Decoración"
+      },
+      {
+        "activo": true,
+        "imagen": "",
+        "titulo": "Banquete corporativo",
+        "categoria": "Corporativos"
+      },
+      {
+        "activo": true,
+        "imagen": "",
+        "titulo": "La Capilla iluminada",
+        "categoria": "Ceremonias"
+      }
+    ]
+  },
   "footer": {
     "aviso_privacidad_texto": "Aviso de privacidad",
     "aviso_privacidad_url": "#",
@@ -105,5 +133,33 @@
     "telefono": "55 53 57 28 33",
     "email": "eventos@haciendasanandres.com.mx",
     "copyright": "© 2025 Hacienda San Andrés. Todos los derechos reservados."
+  },
+  "historia": {
+    "titulo": "Nuestra historia",
+    "texto": "Hacienda San Andrés nació de la visión de crear un espacio donde cada celebración se convirtiera en un recuerdo imborrable. Desde nuestros inicios, nos hemos dedicado a ofrecer un servicio personalizado, atento y de la más alta calidad para que cada evento sea único e irrepetible.\n\nUbicados en el corazón de Naucalpan, nuestros jardines y salones han sido el escenario de miles de bodas, quinceañeras, graduaciones y eventos corporativos. Cada rincón de nuestra hacienda ha sido diseñado para transmitir elegancia, calidez y distinción.\n\nCon un equipo apasionado por los detalles y una infraestructura de primer nivel, Hacienda San Andrés es el lugar donde los sueños toman forma. Aquí, cada momento importa, cada detalle cuenta y cada celebración es tratada como si fuera la nuestra.",
+    "imagen": ""
+  },
+  "seo": {
+    "title": "Hacienda San Andrés – Salón de Eventos en Naucalpan",
+    "meta_description": "Hacienda San Andrés: salón de eventos, bodas, XV años y eventos corporativos en Naucalpan, Estado de México. Jardines, salones y capilla.",
+    "favicon": ""
+  },
+  "home": {
+    "titulo": "El día más importante de tu vida, en un sólo lugar",
+    "subtitulo": "Hacienda San Andrés, el escenario perfecto para tu celebración",
+    "slides": [
+      {
+        "url": "/images/logo.jpg",
+        "alt": "Jardín La Cúpula"
+      },
+      {
+        "url": "/images/logo.jpg",
+        "alt": "Salón Los Arcos"
+      },
+      {
+        "url": "/images/logo.jpg",
+        "alt": "Jardín Los Campos"
+      }
+    ]
   }
 }
